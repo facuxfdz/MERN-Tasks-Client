@@ -4,7 +4,8 @@ import {
     ADD_PROJECT,
     VALIDATE_FORM,
     ACTUAL_PROJECT,
-    ELIMINATE_PROJECT
+    ELIMINATE_PROJECT,
+    
 } from '../../types';
 
 
@@ -47,6 +48,7 @@ const projectReducer = (state, action) => {
                 projects: state.projects.filter(project => project.id !== action.payload),
                 activeProject: null
             }
+
         default: 
             return state;
     }

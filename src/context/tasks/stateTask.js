@@ -9,23 +9,14 @@ import {
     TASK_STATE,
     ACTUAL_TASK,
     EDIT_TASK,
-    CLEAN_TASK_BTN
+    CLEAN_TASK_BTN,
+    ELIMINATE_ALL_TASKS
 } from '../../types/index';
 
 const StateTask = props => {
 
     const initialState = {
-        tasks: [
-            {id: 0, name: 'Choose platform', state: true, projectID: 1},
-            {id: 1, name: 'Choose colors', state: false, projectID: 2},
-            {id: 2, name: 'Choose payment', state: false, projectID: 3},
-            {id: 3, name: 'Choose some', state: true, projectID: 2},
-            {id: 4, name: 'Choose payment', state: false, projectID: 1},
-            {id: 5, name: 'Choose high', state: false, projectID: 3},
-            {id: 6, name: 'Choose anything', state: true, projectID: 1},
-            {id: 7, name: 'Choose numbers', state: false, projectID: 3},
-            {id: 8, name: 'Choose options', state: false, projectID: 2}
-        ],
+        tasks: [],
         actualTasks: [],
         taskError: false,
         selectedTask: []
@@ -97,6 +88,13 @@ const StateTask = props => {
             type: CLEAN_TASK_BTN
         })
     } 
+
+    const eliminateAllTasks = projectID => {
+        dispatch({
+            type: ELIMINATE_ALL_TASKS,
+            payload: projectID
+        });
+    }
     return (
         <ContextTask.Provider
             value={{
@@ -111,7 +109,8 @@ const StateTask = props => {
                 updateTaskState,
                 saveActualTask,
                 updateTask,
-                cleanUpTask
+                cleanUpTask,
+                eliminateAllTasks
             }}
         >
             {props.children}

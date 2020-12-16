@@ -5,11 +5,13 @@ import SignUp from './components/auth/SignUp';
 import Projects from './components/projects/Projects';
 import StateProject from './context/projects/stateProject';
 import StateTask from './context/tasks/stateTask';
+import StateAlert from './context/alerts/stateAlert';
 
 function App() {
   return (
     <StateProject>
       <StateTask>
+      <StateAlert>
       <Router>
         <Switch>
           <Route exact path="/" component={SignIn} />
@@ -17,6 +19,7 @@ function App() {
           <Route exact path="/projects" component={Projects} />
         </Switch>
       </Router>
+      </StateAlert>
       </StateTask>
     </StateProject>
   );

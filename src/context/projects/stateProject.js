@@ -14,18 +14,14 @@ import {
 
 const StateProject = props => {
 
-    const projects = [
-        {id: 1, name: 'Shop'},
-        {id: 2, name: 'Web design'},
-        {id: 3, name: 'About me info'}
-    ]
+    const projects = [];
 
     const initialState = {
         projects: [],
         form: false,
         formError: false,
         activeProject: null
-    }
+    };
 
     // Dispatch to execute actions
     const [ state, dispatch ] = useReducer(ReduceProject, initialState);
@@ -76,7 +72,8 @@ const StateProject = props => {
         dispatch({
             type: ELIMINATE_PROJECT,
             payload: projectID
-        })
+        });
+
     }
     return (
         <ContextProject.Provider

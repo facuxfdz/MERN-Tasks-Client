@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
+import ContextAlert from '../../context/alerts/contextAlert';
 
 const SignUp = () => {
+
+    // Extract values from context
+    const contextAlert = useContext(ContextAlert);
+    const { alert, showAlert } = contextAlert;
 
     // State for the sign in
     const [ user, saveUser] = useState({
@@ -28,17 +33,33 @@ const SignUp = () => {
         e.preventDefault();
 
         // Validate
+        if(
+            name.trim() === "" ||
+            email.trim() === "" ||
+            password.trim() === "" ||
+            confirm.trim() === ""
+        ){
+            showAlert('All fields are required', 'alerta-error');
+            return;
+        }
 
         // Password minimun length
+        if(password.length < 6){
+            showAlert('Password must be at least 8 characters in length', 'alerta-error');
+            return;
+        }
 
         // Password match
-
+        if(password !== confirm){
+            showAlert('Passwords do not match', 'alerta-error');
+        }
         // Passing values to action
     }
 
     return ( 
     
         <div className="form-usuario">
+            {alert ? ( <div className={`alerta ${alert.categ}`}>{alert.msg}</div>): null}
             <div className="contenedor-form sombra-dark">
                 <h1>Sign Up</h1>
 

@@ -12,7 +12,7 @@ const TaskList = () => {
     
     // Extracting from contexts
     const { activeProject, eliminateProject } = contextProjects;
-    const { actualTasks } = contextTasks;
+    const { actualTasks, eliminateAllTasks } = contextTasks;
 
     // There is no project selected
     if(!activeProject) return <h2>Select any project</h2>;
@@ -26,6 +26,7 @@ const TaskList = () => {
     // Eliminate an entire project
     const onClickEliminate = () => {
         eliminateProject(currentProject.id);
+        eliminateAllTasks(currentProject.id);
     }
 
 

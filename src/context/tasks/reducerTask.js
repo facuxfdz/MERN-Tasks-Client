@@ -6,7 +6,9 @@ import {
     TASK_STATE,
     ACTUAL_TASK,
     EDIT_TASK,
-    CLEAN_TASK_BTN
+    CLEAN_TASK_BTN,
+    ELIMINATE_ALL_TASKS
+
 } from '../../types/index';
 
 
@@ -49,6 +51,12 @@ const taskReducer = (state, action) => {
             return {
                 ...state,
                 selectedTask: []
+            }
+        case ELIMINATE_ALL_TASKS:
+            return {
+                ...state,
+                actualTasks: [],
+                tasks: state.tasks.filter(task => task.projectID !== action.payload)
             }
         default:
             return state;
