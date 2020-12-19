@@ -1,12 +1,27 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ContextAlert from '../../context/alerts/contextAlert';
+import ContextAuth from '../../context/auth/contextAuth';
 
-const SignUp = () => {
+const SignUp = (props) => {
 
     // Extract values from context
     const contextAlert = useContext(ContextAlert);
+    const authContext = useContext(ContextAuth);
+    
     const { alert, showAlert } = contextAlert;
+    const { msg, auth, userSignUp } = authContext;
+
+    // In case user have registered or the registry is duplicated
+    useEffect(() => {
+        if(auth){
+            props.history.push('/projects');
+        }
+        if(msg){
+            showAlert(msg.msg, msg.categ); // Comes from stateAuth which change msg state when the query fails, because email is an unique field in our DB
+        }
+        
+    }, [msg, auth, props.history]);
 
     // State for the sign in
     const [ user, saveUser] = useState({
@@ -54,6 +69,11 @@ const SignUp = () => {
             showAlert('Passwords do not match', 'alerta-error');
         }
         // Passing values to action
+        userSignUp({
+            name,
+            email,
+            password
+        });
     }
 
     return ( 
