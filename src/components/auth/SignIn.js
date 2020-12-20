@@ -1,7 +1,27 @@
-import React, { useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import ContextAlert from '../../context/alerts/contextAlert';
+import ContextAuth from '../../context/auth/contextAuth';
 
-const SignIn = () => {
+const SignIn = (props) => {
+
+    const authContext = useContext(ContextAuth);
+    const alertContext = useContext(ContextAlert);
+
+    const { alert, showAlert } = alertContext;
+    const { msg, auth, userLogIn } = authContext;
+
+    useEffect(() => {
+
+        if(auth){
+            props.history.push('/projects');
+        }
+
+        if(msg){
+            showAlert(msg.msg,msg.categ);
+        }
+
+    }, [msg, auth]);
 
     // State for the sign in
     const [ user, saveUser] = useState({
@@ -25,14 +45,20 @@ const SignIn = () => {
     const onSubmit = e => {
         e.preventDefault();
 
-        // Validate
-
+        
+       userLogIn({ // This function validates the fields and update the msg varible
+           email,
+           password
+       });
+       
         // Passing values to action
     }
 
     return ( 
     
         <div className="form-usuario">
+            {alert ? ( <div className={`alerta ${alert.categ}`}>{alert.msg}</div>): null}
+            
             <div className="contenedor-form sombra-dark">
                 <h1>Sign In</h1>
 

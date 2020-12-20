@@ -7,6 +7,8 @@ import StateProject from './context/projects/stateProject';
 import StateTask from './context/tasks/stateTask';
 import StateAlert from './context/alerts/stateAlert';
 import StateAuth from './context/auth/stateAuth';
+import PrivateRoute from './components/routes/privateRoute';
+
 function App() {
   return (
     <StateProject>
@@ -17,7 +19,7 @@ function App() {
               <Switch>
                 <Route exact path="/" component={SignIn} />
                 <Route exact path="/signup" component={SignUp} />
-                <Route exact path="/projects" component={Projects} />
+                <PrivateRoute exact path="/projects" component={Projects} />
               </Switch>
             </Router>
           </StateAuth>

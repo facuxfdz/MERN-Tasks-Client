@@ -10,27 +10,35 @@ import {
 const authReducer = (state, action) => {
     switch (action.type) {
         
+        case SUCCESSFUL_LOGIN:
         case SUCCESSFUL_REGISTRATION:
             localStorage.setItem('token', action.payload.token);
             return {
                 ...state,
                 auth: true,
-                msg: null
+                msg: null,
+                loading: false
             }
+        case SIGN_OFF:
         case FAILED_LOGIN:
         case FAILED_SIGN_UP:
             localStorage.removeItem('token');
             return {
                 ...state,
                 token: null,
-                msg: action.payload
+                user: null,
+                auth: null,
+                msg: action.payload,
+                loading: false
             }
         case GET_USER:
             return {
                 ...state,
-                user: action.payload
+                auth: true,
+                user: action.payload,
+                loading: false
             }
-    
+
         default:
             return state;
     }

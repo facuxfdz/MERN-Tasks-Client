@@ -1,6 +1,7 @@
 :root {
   --blanco: #ffffff;
   --gris1: #edf2f6;
+  --gris1-2: #ced1d4;
   --gris2: #2f3848;
   --gris2-1: #475263;
   --gris3: #1a202d;
@@ -104,6 +105,16 @@ a {
 }
 .btn-eliminate:hover{
   background-color: var(--azul2);
+}
+
+.sign-out {
+  color: var(--blanco);
+}
+
+.sign-out:hover {
+  text-shadow: #2a323f 3px 2px 5px;
+  color: var(--gris1-2);
+  transition: all .3s ease;
 }
 
 @media (min-width: 768px) {

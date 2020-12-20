@@ -18,7 +18,8 @@ const StateAuth = props => {
         token: localStorage.getItem('token'),
         auth: null,
         user: null,
-        msg: null
+        msg: null,
+        loading: true
     }
 
     const [state,dispatch] = useReducer(ReducerAuth,initialState);
@@ -38,13 +39,48 @@ const StateAuth = props => {
             authenticatedUser();
 
         } catch (error) {
-            const alert = {
+            const alert = { // Create the alert to be showed in the view
                 msg: error.response.data.msg,
                 categ: 'alerta-error'
             }
 
             dispatch({
                 type: FAILED_SIGN_UP,
+                payload: alert
+            });
+        }
+    }
+
+
+    const userLogIn = async info => {
+        try {
+            const res = await axiosClient.post('/api/auth',info);
+            
+            dispatch({
+                type: SUCCESSFUL_LOGIN,
+                payload: res.data
+            });
+            
+            authenticatedUser();
+
+        } catch (error) {
+           
+            let alert;
+            if(error.response.data.errors){ // If the error is in the fields validation
+                
+                alert = { // Create the alert to be showed in the view
+                    msg: error.response.data.errors[0].msg,
+                    categ: 'alerta-error'
+                }
+            }else{ // If the error is in the query validation
+                alert = { // Create the alert to be showed in the view
+                    msg: error.response.data.msg,
+                    categ: 'alerta-error'
+                }
+            }
+
+            dispatch({
+                type: FAILED_LOGIN,
                 payload: alert
             });
         }
@@ -57,12 +93,13 @@ const StateAuth = props => {
        
 
         try {
-            const res = await axiosClient.get('/api/auth'); // GET petition which response is a json with the 
+            const res = await axiosClient.get('/api/auth'); // GET petition which response is a json with the user data except password field
            
             dispatch({
                 type: GET_USER,
                 payload: res.data.user
             });
+            
         } catch (error) {
             console.log(error.response);
             dispatch({
@@ -71,6 +108,13 @@ const StateAuth = props => {
         }
     }
 
+    const signOut = async () => {
+        dispatch({
+            type: SIGN_OFF
+        });
+    }
+
+
     return (
         <ContextAuth.Provider
             value={{
@@ -78,7 +122,11 @@ const StateAuth = props => {
                 auth: state.auth,
                 user: state.user,
                 msg: state.msg,
-                userSignUp
+                loading: state.loading,
+                userLogIn,
+                userSignUp,
+                authenticatedUser,
+                signOut
             }}
         >
             {props.children}
