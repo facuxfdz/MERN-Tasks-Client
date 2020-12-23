@@ -60,7 +60,7 @@ const SignUp = (props) => {
 
         // Password minimun length
         if(password.length < 6){
-            showAlert('Password must be at least 8 characters in length', 'alerta-error');
+            showAlert('Password must be at least 6 characters in length', 'alerta-error');
             return;
         }
 
