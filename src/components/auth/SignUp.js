@@ -20,7 +20,7 @@ const SignUp = (props) => {
         if(msg){
             showAlert(msg.msg, msg.categ); // Comes from stateAuth which change msg state when the query fails, because email is an unique field in our DB
         }
-        
+    // eslint-disable-next-line
     }, [msg, auth, props.history]);
 
     // State for the sign in

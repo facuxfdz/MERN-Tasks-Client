@@ -1,12 +1,12 @@
 import React, { useReducer } from 'react';
 import ContextTask from './contextTask';
 import ReducerTask from './reducerTask';
+import axiosClient from '../../config/axios';
 import {
     PROJECT_TASKS,
     ADD_TASK,
     TASK_VALIDATE,
     ELIMINATE_TASK,
-    TASK_STATE,
     ACTUAL_TASK,
     EDIT_TASK,
     CLEAN_TASK_BTN,
@@ -16,7 +16,6 @@ import {
 const StateTask = props => {
 
     const initialState = {
-        tasks: [],
         actualTasks: [],
         taskError: false,
         selectedTask: []
@@ -28,19 +27,36 @@ const StateTask = props => {
 
     
     //Obtain specific project tasks
-    const obtainTasks = projectID => {
-        dispatch({
-            type: PROJECT_TASKS,
-            payload: projectID
-        });
+    const obtainTasks = async projectID => {
+        try {
+            const res = await axiosClient.get('/api/tasks', {params: {projectID}});
+            
+            dispatch({
+                type: PROJECT_TASKS,
+                payload: res.data.tasks
+            });
+
+        } catch (error) {
+            console.log(error.response);
+        }
     }
 
     //Add task to any project
-    const addTask = task => {
-        dispatch({
-            type: ADD_TASK,
-            payload: task
-        });
+    const addTask = async task => {
+
+        try {
+            
+            const res = await axiosClient.post('/api/tasks', task);
+
+            dispatch({
+                type: ADD_TASK,
+                payload: res.data.task
+            });
+
+        } catch (error) {
+            console.log(error.response);
+            
+        }
     }
 
     // Validate and show error
@@ -51,20 +67,38 @@ const StateTask = props => {
     }
 
     // Eliminate a task
-    const eliminateTask = taskID => {
-        dispatch({
-            type: ELIMINATE_TASK,
-            payload: taskID
-        });
+    const eliminateTask = async (taskID, projectID) => {
+
+        try {
+            
+            await axiosClient.delete(`/api/tasks/${taskID}`, {params: {projectID}});
+
+            dispatch({
+                type: ELIMINATE_TASK,
+                payload: taskID
+            });
+
+        } catch (error) {
+            console.log(error.response);
+        }
     }
 
-    // Update task state
-    const updateTaskState = task => {
-        dispatch({
-            type: TASK_STATE,
-            payload: task
-        });
+    // Edit task
+    const updateTask = async task => {
+    
+        try {
+            const res = await axiosClient.put(`/api/tasks/${task._id}`, task);
+            
+            dispatch({
+                type: EDIT_TASK,
+                payload: res.data.task
+            });
+        } catch (error) {
+            console.log(error);
+        }
+
     }
+
 
     // Extract task in order to edit
     const saveActualTask = task => {
@@ -74,13 +108,6 @@ const StateTask = props => {
         })
     }
 
-    // Edit task
-    const updateTask = task => {
-        dispatch({
-            type: EDIT_TASK,
-            payload: task
-        })
-    }
 
     // Clean task form
     const cleanUpTask = () => {
@@ -89,16 +116,24 @@ const StateTask = props => {
         })
     } 
 
-    const eliminateAllTasks = projectID => {
-        dispatch({
-            type: ELIMINATE_ALL_TASKS,
-            payload: projectID
-        });
+    const eliminateAllTasks = async projectID => {
+
+        try {
+            
+            await axiosClient.delete('/api/tasks', {params: {projectID}});
+           
+            dispatch({
+                type: ELIMINATE_ALL_TASKS
+            });
+
+        } catch (error) {
+            console.log(error.response);
+        }
     }
+
     return (
         <ContextTask.Provider
             value={{
-                tasks: state.tasks,
                 actualTasks: state.actualTasks,
                 taskError: state.taskError,
                 selectedTask: state.selectedTask,
@@ -106,7 +141,6 @@ const StateTask = props => {
                 addTask,
                 validateTask,
                 eliminateTask,
-                updateTaskState,
                 saveActualTask,
                 updateTask,
                 cleanUpTask,

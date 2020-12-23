@@ -12,6 +12,7 @@ const Projects = () => {
     
     useEffect(() => {
         authenticatedUser();
+    // eslint-disable-next-line
     }, []);
 
     if(!auth) return null;

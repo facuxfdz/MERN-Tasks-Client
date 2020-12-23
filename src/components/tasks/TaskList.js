@@ -13,7 +13,7 @@ const TaskList = () => {
     // Extracting from contexts
     const { activeProject, eliminateProject } = contextProjects;
     const { actualTasks, eliminateAllTasks } = contextTasks;
-
+    
     // There is no project selected
     if(!activeProject) return <h2>Select any project</h2>;
 
@@ -25,11 +25,11 @@ const TaskList = () => {
 
     // Eliminate an entire project
     const onClickEliminate = () => {
-        eliminateProject(currentProject.id);
-        eliminateAllTasks(currentProject.id);
+        eliminateAllTasks(currentProject._id);
+        eliminateProject(currentProject._id);
+        
     }
-
-
+    
     return ( 
 
         <Fragment>
@@ -43,7 +43,7 @@ const TaskList = () => {
                     : <TransitionGroup>
                         {projectTasks.map(task =>(
                             <CSSTransition
-                                key={task.id}
+                                key={task._id}
                                 timeout={350}
                                 classNames="tarea"
                             >

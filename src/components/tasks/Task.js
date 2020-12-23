@@ -7,14 +7,15 @@ const Task = ({projectTask}) => {
     const tasksContext = useContext(ContextTask);   
     const projectsContext = useContext(ContextProject);
 
-    const { eliminateTask, obtainTasks, updateTaskState, saveActualTask } = tasksContext;
+    const { eliminateTask, obtainTasks, updateTask, saveActualTask } = tasksContext;
     const { activeProject } = projectsContext;
 
 
     // Function launched when eliminate is pressed
     const eliminate = id => {
-        eliminateTask(id);
-        obtainTasks(activeProject[0].id);
+        eliminateTask(id, activeProject[0]._id);
+        
+        obtainTasks(activeProject[0]._id);
     }
 
     // Function to Update task state
@@ -25,7 +26,7 @@ const Task = ({projectTask}) => {
         }else{
             task.state = true;
         }
-        updateTaskState(task);
+        updateTask(task);
         
     } 
 
@@ -70,7 +71,7 @@ const Task = ({projectTask}) => {
                 <button
                     type="button"
                     className="btn btn-secundario"
-                    onClick={() => eliminate(projectTask.id)}
+                    onClick={() => eliminate(projectTask._id)}
                 >Eliminate</button>
             </div>
 

@@ -3,7 +3,6 @@ import {
     ADD_TASK,
     TASK_VALIDATE,
     ELIMINATE_TASK,
-    TASK_STATE,
     ACTUAL_TASK,
     EDIT_TASK,
     CLEAN_TASK_BTN,
@@ -18,12 +17,12 @@ const taskReducer = (state, action) => {
         case PROJECT_TASKS:
             return {
                 ...state,
-                actualTasks: state.tasks.filter(task => task.projectID === action.payload)
+                actualTasks: action.payload
             }
         case ADD_TASK:
             return {
                 ...state,
-                tasks: [action.payload, ...state.tasks, ],
+                actualTasks: [action.payload, ...state.actualTasks],
                 taskError: false
             }
         case TASK_VALIDATE:
@@ -32,15 +31,15 @@ const taskReducer = (state, action) => {
                 taskError: true
             }
         case ELIMINATE_TASK:
+            
             return {
                 ...state,
-                tasks: state.tasks.filter(task => task.id !== action.payload)
+                actualTasks: state.actualTasks.filter(task => task._id !== action.payload)
             }
         case EDIT_TASK:
-        case TASK_STATE:
             return {
                 ...state,
-                tasks: state.tasks.map(task => task.id === action.payload.id ? action.payload : task)
+                actualTasks: state.actualTasks.map(task => task._id === action.payload._id ? action.payload : task)
             }
         case ACTUAL_TASK:
             return {
@@ -56,7 +55,6 @@ const taskReducer = (state, action) => {
             return {
                 ...state,
                 actualTasks: [],
-                tasks: state.tasks.filter(task => task.projectID !== action.payload)
             }
         default:
             return state;

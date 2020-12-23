@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import ContextProject from '../../context/projects/contextProject';
 import ContextTask from '../../context/tasks/contextTask';
-import { v4 as uuidv4 } from 'uuid';
 
 const TaskForm = () => {
 
@@ -57,9 +56,8 @@ const TaskForm = () => {
         // Edit or new task
         if(selectedTask.length === 0){ // New task
             // Add new task
-            task.projectID = activeProject[0].id;
-            task.state = false;
-            task.id = uuidv4();
+            task.projectID = activeProject[0]._id;
+            
             addTask(task);
         }else{ // Edit task (updated in useEffect)
             updateTask(task);
