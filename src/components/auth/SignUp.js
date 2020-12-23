@@ -67,6 +67,7 @@ const SignUp = (props) => {
         // Password match
         if(password !== confirm){
             showAlert('Passwords do not match', 'alerta-error');
+            return;
         }
         // Passing values to action
         userSignUp({
